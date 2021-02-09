@@ -4,7 +4,9 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import { auth, handleUserProfile } from './firebase/utils';
 import {setCurrentUser} from './redux/User/user.action';
 
-// ErroR menit ke 38:44 SETTING App Js jadi hook
+// HOC
+import WithAuth from './hoc/withAuth';
+
 // LAYOUTS
 import MainLayout from './layouts/MainLayout';
 import HomepageLayout from './layouts/HomepageLayout'
@@ -14,6 +16,7 @@ import Homepage from './pages/Homepage';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Recovery from './pages/Recovery';
+import Dashboard from './pages/Dashboard';
 import './default.scss';
 
 
@@ -51,14 +54,14 @@ const App = props => {
             </HomepageLayout>
           )} />
 
-          <Route path="/registration" render={() => currentUser ? <Redirect to="/" /> : (
+          <Route path="/registration" render={() => (
             <MainLayout>
               <Registration />
             </MainLayout>
           )} />
 
           <Route path="/login"
-          render={() => currentUser ? <Redirect to="/" /> : (
+          render={() => (
             <MainLayout>
               <Login />
             </MainLayout>
@@ -68,6 +71,14 @@ const App = props => {
             <MainLayout>
               <Recovery />
             </MainLayout>
+          )} />
+
+          <Route path="/dashboard" render={() => (
+            <WithAuth>
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </WithAuth>
           )} />
 
 
